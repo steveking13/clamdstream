@@ -1,23 +1,25 @@
 #! /usr/bin/env python3
 
-''' Helper function that drives clamd's remote TCP INSTREAM facility by streaming the file over TCP
+helptext = '''Synopsis:
+    Helper function that drives clamd's remote TCP INSTREAM
+    facility by streaming the file over TCP
 
     This allows a machine with no clamav installation to scan files using
-    a remote server
+    a remote server.
 
-    Syntax of zINSTREAM was implemented based on trial error, help pages etc. and as described here:
-
-https://clamav-users.clamav.narkive.com/azQ8KJeO/calling-clamd-instream-on-blocks-of-data-can-a-virus-sneak-by-the-edge-of-a-block
+    Syntax of zINSTREAM was implemented based on trial error, man pages etc.
 
 Syntax:
     clamdstream <host>[:<port>] <filename>|<dirname>
 
-    The script opens a port to the specified host, negotiates a connection with the
-    remote server on the specified port and instigates a INSTREAM interaction,
-    forwarding the data over the TCP port.
+    The script opens a port to the specified host, negotiates a connection
+    with the remote server on the specified port and instigates a
+    INSTREAM interaction, forwarding the file data over the TCP port.
 
-    The script echos the response from the remote service.
+    The script then echos the response from the remote service.
+'''
 
+'''
     The syntax of the clamd connection is:
     nINSTREAM\n
     <32 bits big endian size of data>
@@ -26,8 +28,8 @@ Syntax:
     [<data>]
     ...
 
-    Each INSTREAM invocation whole stream is treated as a single entity, so you need to invoke
-    this for each file
+    Each INSTREAM invocation whole stream is treated as a single entity,
+    so the script uses a separate tcp connection for each file.
 
     This file is Copyright 2022 Steve King debian.invux@com
 
@@ -53,12 +55,20 @@ DEFAULT_PORT  = 3310        # clamd default
 # Control how the script behaves
 
 # Parse the commandline
+
+if len(sys.argv) < 2:
+    sys.stderr.write("error: specify a hostname, or --help\n")
+    sys.exit(2)
+
+if (sys.argv[1] == "--help"):
+    sys.stdout.write("{}\n".format(helptext))
+    sys.exit()
+
 try:
     (host,port) = sys.argv[1].split(':')
 except ValueError:
     host = sys.argv[1]
     port = DEFAULT_PORT
-
 
 
 def streamfile(filename):
