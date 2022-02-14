@@ -12,6 +12,8 @@ clamd instance is running.
 # Configuration notes
 ### clamd
 
+The server that is running clamd.
+
 You will need a line in /etc/clamav/clamd.conf:<br>
 <pre>TCPSocket 3310</pre><br>
 (3310 is the default socket)<br>
@@ -22,6 +24,8 @@ Where address is a local interface. This will restrict which addresses the host 
 Clamav recommend against exposing this to untrusted networks.
 
 ### amavis
+
+The client that is wanting to virus scan some stuff.
 
 If using with amavis, you will need a stanza in your /etc/amavis/conf.d/15-av_scanners file:
   
