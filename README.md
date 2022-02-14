@@ -10,26 +10,27 @@ This is a fairly simple python script that will recursively traverse a directory
 clamd instance is running.
 
 # Configuration notes
-clamd.conf
+### clamd
 
-You will need a line:
-TCPSocket 3310
-(3310 is the default socket)
-You may want the line:
-TCPAddr <address>
-to restrict which addresses the host listens on.
+You will need a line in /etc/clamav/clamd.conf:<br>
+<pre>TCPSocket 3310</pre><br>
+(3310 is the default socket)<br>
+If you have a multi-homed server, you may want the line:<br>
+<pre>TCPAddr &lt;address&gt;</pre><br>
+Where address is a local interface. This will restrict which addresses the host listens on.
   
 Clamav recommend against exposing this to untrusted networks.
 
-amavis
+### amavis
 
-If using with amavis, you will need a stanza in your 15-av_scanners file:
-# This is a remote instance, nINSTREAM should pass the
+If using with amavis, you will need a stanza in your /etc/amavis/conf.d/15-av_scanners file:
+  
+<pre># This is a remote instance, nINSTREAM should pass the
 # suspect file over the TCP connection
  ['ClamAV-remote-stream',
   '/usr/local/bin/clamdstream',
-  "<hostname or IP> {}" ,
+  "&lt;hostname or IP&gt; {}" ,
    qr/\bOK$/m, qr/\bFOUND$/m,
-   qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],
+   qr/^.*?: (?!Infected Archive)(.*) FOUND$/m ],</pre>
 
-where <hostname or IP> is replaced with the identity of the computer on which clamd is running.
+where &lt;hostname or IP&gt; is replaced with the identity of the computer on which clamd is running.
