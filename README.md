@@ -3,7 +3,7 @@ Lightweight streaming client for clamd
 
 clamd provides a TCP interface for scanning files. The clamdscan executable profided as part of the clamav suite can use this, but only via localhost.
 
-As clamd is memory heavy, it would be nice to be able to use this remote capability in enfironments where memory is at a premium,
+As clamd is memory heavy, it would be nice to be able to use this remote capability in environments where memory is at a premium,
 for example Raspberry Pi or virtual machines.
 
 This is a fairly simple python script that will recursively traverse a directory and pass the content of the files it finds to a host:port where a
